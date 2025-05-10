@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="icon" href="images/shapes.png">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <title>Jamesy Creator Drawings</title>
+    <style>
+        * { margin: 0; padding: 0;  box-sizing: border-box;  font-family:"Mulish"; }
+        body { background-color:#e0e0e0; overflow: hidden; background-size:cover; }
+        #homeDiv, #editorDiv { display: none; height: 100vh; width: 100vw; position: absolute; top: 0; left: 0; }
+        canvas { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; background: white; cursor: crosshair; }
+
+
+         .toolbar-button {
+                background:gainsboro;
+             border:none;
+             border-radius:5px;
+                height:30px;
+                width:110px;
+
+                }
+
+        .toolbar-icon {
+                  background:gainsboro;
+             border:none;
+             border-radius:5px;
+                height:30px;
+            padding-left:1px;
+                width:30px;
+            padding-top:1px;
+            }
+
+        .toolbar-icon img {
+            width:70%;
+            }
+
+        .toolbar-button:hover, .toolbar-icon:hover {
+               background:silver;
+            }
+        
+        /* Floating toolbars */
+        #topToolbar, #bottomToolbar {
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            background:whitesmoke;
+            padding: 10px;
+            border-radius: 10px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        #topToolbar { top: 10px; }
+        #bottomToolbar { bottom: 10px; }
+
+        /* Inputs & Buttons */
+        button, input { cursor: pointer; }
+        #drawingName { width: 150px; padding: 5px; outline:none; border-radius: 5px; border: 1px solid #ccc; cursor: text; }
+        #statusText { font-weight: bold; color: red; width:120px; text-align:center;}
+
+        /* Home Screen Styling */
+        #homeDiv { overflow:scroll; display: flex; flex-direction: column; align-items: center; padding: 0px; padding-bottom:20px; }
+.drawing-container {
+    display: flex;
+    flex-direction: column; /* Stack cards vertically */
+    gap: 15px; /* Space between cards */
+    margin-top: 20px;
+    min-height: 100px;
+}
+
+.drawing-card {
+    display: flex; /* Use flexbox to arrange image and name */
+    align-items: center; /* Align items vertically centered */
+    border: 1px solid gainsboro;
+    border-radius: 4px;
+    padding: 10px;
+    background: white;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    width: 95%; /* Take up the full width available */
+}
+
+.drawing-card img {
+    border:solid whitesmoke 1px;
+    height: 50px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.drawing-card p {
+    margin: 0;
+    font-size: 16px; /* Adjust font size for a cleaner look */
+    font-weight: bold;
+}
+
+.drawing-card:hover {
+    transform: scale(1.02);
+}
+
+@media (max-width: 800px) {
+    .drawing-card {
+        align-items: center;
+    }
+    .drawing-card img {
+        width: 40px;
+        height: 40px;
+    }
+    .drawing-card p {
+        font-size: 14px;
+
+    }
+}
+
+
+
+        /* Style for the menu container */
+.menu-container {
+    position: fixed;
+    z-index:50;
+    top: 20px;
+    right: 20px;
+    background:none;
+}
+
+/* Style for the menu button */
+.menu-button {
+    padding:10px;
+    width:50px;
+    height:50px;
+    border:none;
+    transition:0.3s;
+    margin-top:5px;
+    background:white;
+    border-radius:50px;
+
+}
+
+        .menu-button:hover {
+      background:whitesmoke;
+            }
+
+/* Hide menu options by default */
+.menu-options {
+    margin-top:20px;
+    display: none;
+    background:white;
+    position: absolute;
+    top: 40px;
+    right: 0;
+    border-bottom:none;
+    width: 200px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+/* Style for each menu option */
+.menu-options a {
+   font-family:"Mulish";
+    text-decoration: none;
+    padding: 15px;
+    cursor:pointer;
+    color:black;
+    display: block;
+    transition:0.3s;
+}
+
+.menu-options a:hover {
+   background:whitesmoke;
+}
+
+/* Show the menu options when the menu is active */
+.menu-options.show {
+    display: block;
+}
+
+        .more-vert-icon {
+            width:80%;
+            }
+
+        .ripple-button {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.ripple-button:after {
+  content: "";
+  background: #f1f1f1;
+  display: block;
+  position: absolute;
+  padding-top: 300%;
+  padding-left: 350%;
+  margin-left: -20px !important;
+  margin-top: -120%;
+  opacity: 0;
+  transition: all 0.8s;
+}
+
+.ripple-button:active:after {
+  padding: 0;
+  margin: 0;
+  opacity: 1;
+  transition: 0s;
+}
+
+        .new-button {
+            transition:0s;
+            margin-top:10px;
+              background:dodgerblue;
+            color:white;
+            width:150px;
+            border:none;
+            padding:10px;
+            border-radius:10px;
+            
+            }
+
+        
+
+        .new-button:hover {
+background:#1b73ea;
+            }
+
+      #searchBar {
+            margin-top: 10px;
+            width: 30%;
+            padding: 8px;
+          outline:none;
+          cursor:text;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+        }
+
+          .home-page-sidebar-left {
+              background:white;
+              width:300px;
+              display:block;
+              height:100vh;
+              margin-right:20px;
+           border-right:solid whitesmoke 1px;
+           border-top:none;
+           border-radius:0px 0px 10px 0px;
+       border-left:none;
+           border-bottom:none;
+              float:left;
+           }
+       .title-container {
+           margin-top:20px;
+           width:100%;
+           padding-top:30px;
+           padding:20px;
+           display:flex;
+           }
+
+                       .animated-title {
+    position: relative;
+    display: inline-block;
+    transition:0.5s;
+                   
+           
+}
+
+.animated-title:hover {
+    background: linear-gradient(to left, paleturquoise, mediumaquamarine);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+
+        
+       .home-page-title {
+color:#53595d;
+           
+           font-family:"Poppins";
+           
+           font-size:22px;
+           margin-top:8px;
+           }
+       .title-img {
+             width:50px;
+           cursor:pointer;
+           margin-right:10px;
+           height:50px;
+        
+           }
+
+       .delete-document-button-file-list {
+              font-family:"Mulish";
+           padding:5px;
+           transition:0s;
+           border:none;
+           float:right;
+           margin-right:10px;
+           font-size:16px;
+           opacity:0;
+           border-radius:5px;
+           display:inline-block;
+           margin-left:20px;
+           background:tomato;
+           color:white;
+           
+           }
+
+       .delete-document-button-file-list:hover {
+          background:red;
+           
+}
+
+        .drawing-card:hover .delete-document-button-file-list {
+               opacity:1;
+            }
+
+       .home-page-nav-button {
+           font-family:"Mulish";
+           text-align:left;
+           border:none;
+           padding:10px;
+           font-size:18px;
+          
+           padding-left:20px;
+           width:100%;
+      background:transparent;
+
+           }
+
+       .home-page-nav-button:hover {
+background:whitesmoke;
+           }
+
+       .nav-buttons-container {
+       width:100%;
+       }
+       .pointer {
+       cursor:pointer;
+           }
+
+       .home-page-nav {
+      width:100%;
+           padding-top:11px;
+           padding-left:none;
+           padding-right:none;
+           border-right:none;
+           border-top:none;
+           border-bottom:solid whitesmoke 1px;
+           border-left:solid whitesmoke 1px;
+           background:white;
+           height:50px;
+           }
+
+       
+       #fileList li:hover .delete-document-button-file-list {
+        opacity:1;
+           transition:0s;
+       
+           }
+       .nav-section-text {
+         font-family:"Poppins";
+           color:#9faaae;
+           margin-bottom:5px;
+           margin-left:25px;
+           font-weight:600;
+           font-size:14px;
+           display:inline-block;
+       }
+       .below-first3 {
+       margin-top:14px;
+       }
+
+        @media (max-width: 800px) {
+.home-page-sidebar-left {
+    display:none;
+    }
+
+            #homeDiv {
+
+                padding-left:20px;
+                }
+
+            #colors {
+                display:none;
+                }
+
+            #searchBar {
+             width:40%;
+                }
+            
+                }
+           
+    </style>
+</head>
+<body>
+
+
+  
+
+    <!-- Home Screen -->
+    <div id="homeDiv">
+
+        <div class="colors" id="colors" style="width:100%;height:14px;background-size:cover;background:url('images/loadingbar.gif');"> </div>
+        
+
+          <div class="home-page-sidebar-left">
+           <div class="title-container"> <img onclick="window.location.href = 'index.html';" class="title-img" src="images/shapes.png"> <span onclick="window.location.href = 'index.html';" class="home-page-title pointer">Jamesy Creator</span></div>
+
+        <span class="nav-section-text">DRAWINGS</span>
+             
+               <button class="home-page-nav-button ripple-button" onclick="newDrawing()">New drawing</button>
+
+
+
+             <span class="nav-section-text below-first3">JAMESY CREATOR</span>
+
+<!-- <button class="home-page-nav-button ripple-button" onclick="window.location.href = 'index.html';">
+  Dashboard
+</button>
+       -->     
+           <button class="home-page-nav-button ripple-button" onclick="window.location.href = 'https://jamesy-tech.github.io/jamesy-creator-docs';">Docs</button>
+
+           <button class="home-page-nav-button ripple-button" onclick="window.location.href = 'https://jamesy-tech.github.io/jamesy-creator-drawings/';">Drawings</button>
+
+            <button class="home-page-nav-button ripple-button" onclick="window.location.href = 'https://jamesy-tech.github.io/jamesy-creator-code/';">Scripts</button>
+
+           <button class="home-page-nav-button ripple-button" onclick="window.location.href = 'https://jamesy-tech.github.io/jamesy-creator-creative-toolbox/';">Creative Toolbox</button>
+           
+                 <span class="nav-section-text below-first3">OTHER</span>
+
+              <button class="home-page-nav-button ripple-button" onclick="window.location.href = 'settings.html';">Settings</button>
+
+                <button class="home-page-nav-button ripple-button" onclick="quit()">Quit</button>
+           
+       </div>
+        
+
+        
+
+         <div class="menu-container">
+        <button class="menu-button ripple-button" onclick="toggleMenu()"><img class="more-vert-icon" src="images/more-vert.png"></button>
+        <div class="menu-options" id="menuOptions">
+          <a class="ripple-button" onclick="newDrawing()">New drawing</a>
+            <a class="ripple-button" href="https://jamesy-tech.github.io/jamesy-creator-docs/">Docs</a>
+            <a class="ripple-button" href="https://jamesy-tech.github.io/jamesy-creator-drawings/">Drawings</a>
+            <a class="ripple-button" href="https://jamesy-tech.github.io/jamesy-creator-creative-toolbox/">Creative Toolbox</a>
+             <a class="ripple-button" onclick="quit()">Quit</a>
+        </div>
+    </div>
+
+
+   
+      <br>
+    
+        <button onclick="newDrawing()" class="ripple-button new-button">New drawing</button>   &nbsp;    <input type="text" id="searchBar" placeholder="Search drawings..." oninput="filterDrawings()">
+        <div id="savedDrawings" class="drawing-container"></div>
+    </div>
+
+    <!-- Editor Screen -->
+    <div id="editorDiv">
+
+        <style>
+            #colorPicker {
+ padding:0px;
+               opacity:0;
+                border-radius:50px;
+                border:none;
+                outline:none;
+                padding:0;
+                background:none;
+                height:0px;
+                width:0px;
+                margin:0;
+              
+                }
+
+              #fakeColorPicker {
+ padding:0px;
+                  margin-right:10px;
+                border-radius:50px;
+                border:none;
+                outline:none;
+                padding:0;
+                background:none;
+                height:40px;
+                width:40px;
+              
+                }
+
+            #colorPicker:focus {
+            border:solid dodgerblue 1px;
+                }
+            #penSize {
+padding:10px;
+                }
+
+            #eraser {
+               
+                }
+
+          
+            
+        </style>
+        
+        <canvas id="canvas"></canvas>
+
+      
+        <div id="topToolbar">
+         &nbsp;&nbsp;   <button class="ripple-button toolbar-icon" onclick="goHome()"><img src="images/homeicon.png"></button>
+            <input type="text" id="drawingName" placeholder="Untitled drawing">
+           
+                         <button onclick="deleteDrawing()" class="ripple-button toolbar-button">Delete drawing</button>
+             <button onclick="saveDrawing()" class="ripple-button toolbar-button">Save</button>
+            <button onclick="downloadDrawing()" class="ripple-button toolbar-button">Download</button>
+            <span id="statusText">Not Saved</span> &nbsp;&nbsp;
+        </div>
+
+    
+        <div id="bottomToolbar">
+            <input type="color" id="colorPicker" value="#000000">
+            <div id="fakeColorPicker" class="ripple-button" onclick="colorPick()"></div>
+            <input type="range" id="penSize" min="1" max="100" value="2">
+            <button onclick="toggleEraser()" id="eraser" class="ripple-button toolbar-button" >Eraser</button>
+              <button onclick="clearCanvas()" class="ripple-button toolbar-button">Clear canvas</button>
+
+        </div>
+    </div>
+
+
+          <script>
+ 
+       getLocalStorage()
+     
+       
+        function getLocalStorage() {
+                   const backgroundImage = localStorage.getItem('background2');
+            if (backgroundImage) {
+                document.getElementById("homeDiv").style.backgroundImage = `url(${backgroundImage})`;
+                document.getElementById("homeDiv").style.backgroundSize = 'cover';
+                document.getElementById("homeDiv").style.backgroundPosition = 'center';
+                document.getElementById("homeDiv").style.backgroundRepeat = 'no-repeat';
+            }
+
+        }
+
+                   setTimeout(() => {
+       
+                document.getElementById('colors').style.backgroundImage = "url('images/colors.png')";
+    }, 3500);
+
+
+             
+
+              function colorPick() {
+                document.getElementById("colorPicker").click();
+                  }
+              
+document.addEventListener("DOMContentLoaded", function () {
+    const colorPicker = document.getElementById("colorPicker");
+     const fakeColorPicker = document.getElementById("fakeColorPicker");
+    fakeColorPicker.style.backgroundColor = colorPicker.value;
+    
+    if (colorPicker) {
+        colorPicker.addEventListener("input", function () {
+            fakeColorPicker.style.backgroundColor = colorPicker.value;
+        });
+        
+        colorPicker.addEventListener("change", function () {
+            fakeColorPicker.style.backgroundColor = colorPicker.value;
+        });
+    }
+});
+
+
+
+     </script>
+    
+    <script>
+
+     
+     function quit() {
+    window.close()
+    setTimeout(() => {
+       window.location.href = "https://jamesy-tech.github.io/jamesy-creator/";
+    }, 100);
+  }
+    
+            
+
+
+function updateDocumentTitle() {
+    const drawingNameInput = document.getElementById('drawingName');
+    
+    // Check if the input is not empty
+    if (drawingNameInput.value.trim() !== '') {
+        document.title = `${drawingNameInput.value} | Jamesy Creator Drawings`;
+    }
+}
+
+
+        const drawingInput = document.getElementById('drawingName');
+drawingInput.addEventListener('input', updateDocumentTitle);
+
+
+        
+        // Function to toggle the menu visibility
+function toggleMenu() {
+    const menu = document.getElementById('menuOptions');
+    menu.classList.toggle('show');
+}
+
+        
+        let homeDiv = document.getElementById("homeDiv");
+        let editorDiv = document.getElementById("editorDiv");
+        let canvas = document.getElementById("canvas");
+        let ctx = canvas.getContext("2d");
+        let colorPicker = document.getElementById("colorPicker");
+        let fakeColorPicker = document.getElementById("fakeColorPicker");
+        let penSize = document.getElementById("penSize");
+        let savedDrawingsDiv = document.getElementById("savedDrawings");
+        let drawingNameInput = document.getElementById("drawingName");
+        let statusText = document.getElementById("statusText");
+        let eraserActive = false;
+        let lastColor = "#000000";
+        let drawingId = null;
+        let isSaved = false;
+        let drawing = false;
+
+        function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";  // Ensure this is set every time the canvas resizes
+    if (drawingId) {
+        let img = new Image();
+        img.src = localStorage.getItem(drawingId);
+        img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    }
+}
+
+        function goHome() {
+            document.title = "Jamesy Creator Drawings"
+            setTimeout(() => {
+            editorDiv.style.display = "none";
+            homeDiv.style.display = "block";
+            document.body.style.overflow = "scroll";
+            loadSavedDrawings(); // Refresh drawings every time
+
+            document.getElementById("searchBar").focus();
+            }, 300);
+        }
+
+        function openEditor(id = null) {
+
+      
+
+            document.body.style.overflow = "hidden";
+            
+             setTimeout(() => {
+                  
+           
+            drawingId = id;
+            editorDiv.style.display = "block";
+            homeDiv.style.display = "none";
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            resizeCanvas();
+            drawingNameInput.value = id ? id.replace("drawing_", "") : "";
+            setStatus(true); // Assume saved on open
+
+                   updateDocumentTitle();
+                  
+             }, 300);
+            
+        }
+
+        function newDrawing() {
+
+            
+            document.title = "Untitled drawing | Jamesy Creator Drawings";
+             
+                   openEditor()
+       
+        }
+
+   
+
+        function saveDrawing() {
+            let name = drawingNameInput.value.trim();
+            if (!name) {
+                alert("Please enter a name for your drawing.");
+                return;
+            }
+            drawingId = "drawing_" + name;
+            localStorage.setItem(drawingId, canvas.toDataURL());
+            alert("Drawing saved.");
+            setStatus(true);
+            // goHome();
+        }
+
+
+          function filterDrawings() {
+            let searchValue = document.getElementById("searchBar").value.toLowerCase();
+            let drawings = document.querySelectorAll(".drawing-card");
+            drawings.forEach(card => {
+                let title = card.querySelector("p").textContent.toLowerCase();
+                card.style.display = title.includes(searchValue) ? "flex" : "none";
+            });
+        }
+
+        document.getElementById("searchBar").focus();
+        
+
+        function downloadDrawing() {
+            let link = document.createElement("a");
+            link.download = (drawingNameInput.value.trim() || "drawing") + ".png";
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+           function loadSavedDrawings() {
+            savedDrawingsDiv.innerHTML = "";
+            Object.keys(localStorage).forEach(id => {
+                if (id.startsWith("drawing_")) {
+                    let name = id.replace("drawing_", "");
+                    let img = new Image();
+                    img.src = localStorage.getItem(id);
+                    
+                    let card = document.createElement("div");
+                    card.className = "drawing-card ripple-button";
+                    card.onclick = () => openEditor(id);
+                    
+                    let title = document.createElement("p");
+                    title.textContent = name;
+
+                    card.appendChild(img);
+                    card.appendChild(title);
+                    savedDrawingsDiv.appendChild(card);
+                }
+            });
+        }
+
+        function clearCanvas() {
+    if (confirm("Are you sure you want to clear the canvas?")) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        setStatus(false); // Update the status to 'Not Saved'
+    }
+}
+
+function deleteDrawing() {
+    if (confirm("Are you sure you want to delete this drawing?")) {
+        // Remove the drawing from localStorage
+        localStorage.removeItem(drawingId);
+        // Redirect to the home screen and refresh the saved drawings
+        goHome();
+    }
+}
+
+        
+
+
+
+        
+        function toggleEraser() {
+           
+            eraserActive = !eraserActive;
+            if (eraserActive) {
+                lastColor = colorPicker.value;
+                colorPicker.value = "#FFFFFF";
+                fakeColorPicker.style.backgroundColor = "white";
+            } else {
+                colorPicker.value = lastColor;
+                fakeColorPicker.style.backgroundColor = lastColor;
+            }
+            setStatus(false);
+        }
+
+        function setStatus(saved) {
+            isSaved = saved;
+            statusText.textContent = saved ? "Saved" : "Not Saved";
+            statusText.style.color = saved ? "green" : "red";
+        }
+
+        function markUnsaved() { if (isSaved) setStatus(false); }
+
+     // Drawing logic
+function getEventCoordinates(e) {
+    if (e.touches && e.touches.length > 0) {
+        return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }
+    return { x: e.clientX, y: e.clientY };
+}
+
+function startDrawing(e) {
+    const { x, y } = getEventCoordinates(e);
+    drawing = true;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    e.preventDefault();
+}
+
+function draw(e) {
+    if (!drawing) return;
+    const { x, y } = getEventCoordinates(e);
+    ctx.strokeStyle = colorPicker.value;
+    ctx.lineWidth = penSize.value;
+    ctx.lineTo(x, y);
+    ctx.stroke();
+    setStatus(false);
+    e.preventDefault();
+}
+
+function stopDrawing() {
+    drawing = false;
+}
+
+// Mouse events
+canvas.addEventListener("mousedown", startDrawing);
+canvas.addEventListener("mousemove", draw);
+canvas.addEventListener("mouseup", stopDrawing);
+canvas.addEventListener("mouseleave", stopDrawing);
+
+// Touch events
+canvas.addEventListener("touchstart", startDrawing);
+canvas.addEventListener("touchmove", draw);
+canvas.addEventListener("touchend", stopDrawing);
+canvas.addEventListener("touchcancel", stopDrawing);
+
+// Other logic
+window.addEventListener("resize", resizeCanvas);
+drawingNameInput.addEventListener("input", markUnsaved);
+homeDiv.style.display = "block";
+loadSavedDrawings();
+
+        
+    </script>
+
+</body>
+</html>
