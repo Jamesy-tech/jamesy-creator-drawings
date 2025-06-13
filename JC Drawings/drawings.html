@@ -587,13 +587,15 @@ document.addEventListener("DOMContentLoaded", function () {
 }
 </style>
     <script>
- if (new URLSearchParams(window.location.search).get("event") === "window") document.getElementById("window").style.display = "block";
- function reOpen()  {
+
+         function reOpen()  {
   window.top.location.href = "https://jamesy-tech.github.io/jamesy-creator-drawings"
  }
 
- reOpen()
- </script>
+ if (new URLSearchParams(window.location.search).get("event") === "window") reOpen()
+
+ 
+ </script> 
 
     
     <script>
