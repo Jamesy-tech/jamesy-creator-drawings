@@ -580,6 +580,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
      </script>
+
+     <style>
+  #window {
+  display:none;
+}
+</style>
+    <script>
+ if (new URLSearchParams(window.location.search).get("event") === "window") document.getElementById("window").style.display = "block";
+ function reOpen()  {
+  window.top.location.href = "https://jamesy-tech.github.io/jamesy-creator-docs"
+ }
+
+ reOpen()
+ </script>
+
     
     <script>
 
