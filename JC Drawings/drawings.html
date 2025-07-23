@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="icon" href="images/drawings.png">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
     <title>Drawings</title>
@@ -22,8 +23,8 @@
                 background:gainsboro;
              border:none;
              border-radius:5px;
-                height:30px;
-                width:110px;
+                height:38px;
+                width:50px;
 
                 }
 
@@ -31,7 +32,7 @@
                   background:gainsboro;
              border:none;
              border-radius:5px;
-                height:30px;
+                height:37px;
             padding-left:1px;
                 width:30px;
             padding-top:1px;
@@ -62,7 +63,7 @@
 
         /* Inputs & Buttons */
         button, input { cursor: pointer; }
-        #drawingName { width: 150px; padding: 5px; outline:none; border-radius: 5px; border: 1px solid #ccc; cursor: text; }
+        #drawingName { width: 150px; padding: 10px; outline:none; border-radius: 5px; border: 1px solid #ccc; cursor: text; }
         #statusText { font-weight: bold; color: red; width:120px; text-align:center;}
 
         /* Home Screen Styling */
@@ -124,8 +125,8 @@
 .menu-container {
     position: fixed;
     z-index:50;
-    top: 20px;
-    right: 20px;
+    top: 30px;
+    right: 30px;
     background:none;
 }
 
@@ -241,7 +242,7 @@ background:#1b73ea;
           .home-page-sidebar-left {
               background:white;
               width:300px;
-              display:block;
+              display:none;
               height:100vh;
               margin-right:20px;
            border-right:solid whitesmoke 1px;
@@ -251,6 +252,7 @@ background:#1b73ea;
            border-bottom:none;
               float:left;
            }
+
        .title-container {
            margin-top:20px;
            width:100%;
@@ -382,6 +384,7 @@ background:whitesmoke;
             #homeDiv {
 
                 padding-left:20px;
+
                 }
 
             #colors {
@@ -393,21 +396,25 @@ background:whitesmoke;
                 }
             
                 }
+
+                #homeDiv {
+                      padding-left:30px;
+                }
            
     </style>
 </head>
 <body>
 
 
-  
+   <div class="colors" id="colors" style="width:100%;height:14px;background-size:cover;background:url('images/loadingbar.gif');"> </div>
 
     <!-- Home Screen -->
     <div id="homeDiv">
 
-        <div class="colors" id="colors" style="width:100%;height:14px;background-size:cover;background:url('images/loadingbar.gif');"> </div>
-        
-
+        <br>
+    
           <div class="home-page-sidebar-left">
+
            <div class="title-container"> <img onclick="window.location.href = 'index.html';" class="title-img" src="images/shapes.png"> <span onclick="window.location.href = 'index.html';" class="home-page-title pointer">Jamesy Creator</span></div>
 
         <span class="nav-section-text">DRAWINGS</span>
@@ -456,7 +463,7 @@ background:whitesmoke;
    
       <br>
     
-        <button onclick="newDrawing()" class="ripple-button new-button">New drawing</button>   &nbsp;    <input type="text" id="searchBar" placeholder="Search drawings..." oninput="filterDrawings()">
+        <button onclick="newDrawing()" class="ripple-button new-button">New drawing</button>   &nbsp;    <input style="display:none;" type="text" id="searchBar" placeholder="Search drawings..." oninput="filterDrawings()">
         <div id="savedDrawings" class="drawing-container"></div>
     </div>
 
@@ -510,12 +517,15 @@ padding:10px;
 
       
         <div id="topToolbar">
-         &nbsp;&nbsp;   <button class="ripple-button toolbar-icon" onclick="goHome()"><img src="images/homeicon.png"></button>
-            <input type="text" id="drawingName" placeholder="Untitled drawing">
+         &nbsp;&nbsp; <!--  <button class="ripple-button toolbar-icon" onclick="goHome()"><img src="images/homeicon.png"></button> -->
            
-                         <button onclick="deleteDrawing()" class="ripple-button toolbar-button">Delete drawing</button>
-             <button onclick="saveDrawing()" class="ripple-button toolbar-button">Save</button>
-            <button onclick="downloadDrawing()" class="ripple-button toolbar-button">Download</button>
+                     <button onclick="goHome()" class="ripple-button toolbar-button"><span class="material-symbols-outlined">home</span></button>
+         
+         <input type="text" id="drawingName" placeholder="Untitled drawing">
+           
+                         <button onclick="deleteDrawing()" class="ripple-button toolbar-button"><span class="material-symbols-outlined">delete</span></button>
+             <button onclick="saveDrawing()" class="ripple-button toolbar-button"><span class="material-symbols-outlined">save</span></button>
+            <button onclick="downloadDrawing()" class="ripple-button toolbar-button"><span class="material-symbols-outlined">download</span></button>
             <span id="statusText">Not Saved</span> &nbsp;&nbsp;
         </div>
 
@@ -524,8 +534,8 @@ padding:10px;
             <input type="color" id="colorPicker" value="#000000">
             <div id="fakeColorPicker" class="ripple-button" onclick="colorPick()"></div>
             <input type="range" id="penSize" min="1" max="100" value="2">
-            <button onclick="toggleEraser()" id="eraser" class="ripple-button toolbar-button" >Eraser</button>
-              <button onclick="clearCanvas()" class="ripple-button toolbar-button">Clear canvas</button>
+            <button onclick="toggleEraser()" id="eraser" class="ripple-button toolbar-button" ><span class="material-symbols-outlined">ink_eraser</span></button>
+              <button onclick="clearCanvas()" class="ripple-button toolbar-button"><span class="material-symbols-outlined">layers_clear</span></button>
 
         </div>
     </div>
@@ -858,10 +868,11 @@ loadSavedDrawings();
 const user = localStorage.getItem("username");
 
 if (!user || user.toLowerCase() === "guest") {
-  window.location.href = "https://jamesy-tech.github.io/jamesy-creator/Jamesy%20Creator/login.html";
+  // window.location.href = "https://jamesy-tech.github.io/jamesy-creator/Jamesy%20Creator/login.html";
 }
 
     </script>
 
 </body>
 </html>
+
