@@ -68,24 +68,25 @@
 
         /* Home Screen Styling */
         #homeDiv { overflow:scroll; display: flex; flex-direction: column; align-items: center; padding: 0px; padding-bottom:20px; }
-.drawing-container {
+
+        .drawing-container {
     display: flex;
-    flex-direction: column; /* Stack cards vertically */
-    gap: 15px; /* Space between cards */
+    flex-direction: column;
+    gap: 15px; 
     margin-top: 20px;
     min-height: 100px;
 }
 
 .drawing-card {
-    display: flex; /* Use flexbox to arrange image and name */
-    align-items: center; /* Align items vertically centered */
+    display: flex; 
+    align-items: center; 
     border: 1px solid gainsboro;
     border-radius: 4px;
     padding: 10px;
     background: white;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
-    width: 95%; /* Take up the full width available */
+    width: 100%;
 }
 
 .drawing-card img {
@@ -97,12 +98,12 @@
 
 .drawing-card p {
     margin: 0;
-    font-size: 16px; /* Adjust font size for a cleaner look */
+    font-size: 16px;
     font-weight: bold;
 }
 
 .drawing-card:hover {
-    transform: scale(1.02);
+    transform: scale(1.01);
 }
 
 @media (max-width: 800px) {
@@ -121,16 +122,16 @@
 
 
 
-        /* Style for the menu container */
+  
 .menu-container {
     position: fixed;
     z-index:50;
-    top: 30px;
-    right: 30px;
+    top: 56px;
+    right: 35px;
     background:none;
 }
 
-/* Style for the menu button */
+
 .menu-button {
     padding:10px;
     width:50px;
@@ -383,7 +384,7 @@ background:whitesmoke;
 
             #homeDiv {
 
-                padding-left:20px;
+                padding-left:0px;
 
                 }
 
@@ -398,20 +399,83 @@ background:whitesmoke;
                 }
 
                 #homeDiv {
-                      padding-left:30px;
+                      padding-left:0px;
                 }
            
     </style>
 </head>
 <body>
 
+     
+   <div class="colors" id="colors" style="display:none; width:100%;height:14px;background-size:cover;background:url('images/loadingbar.gif');"> </div>
 
-   <div class="colors" id="colors" style="width:100%;height:14px;background-size:cover;background:url('images/loadingbar.gif');"> </div>
-
+   
     <!-- Home Screen -->
     <div id="homeDiv">
 
-        <br>
+         <div class="jamesy-creator">
+  <style>
+    .jamesy-creator {
+      height: 40px;
+      margin-bottom:5px;
+      padding:5px;
+      display:flex;
+      padding-top:7px;
+      padding-left:12px;
+      background: rgba(0, 0, 0, 0.8);
+    }
+    .icon_jamesy-creator {
+      height: 90%;
+      cursor:default;
+    }
+
+    .title_jamesy-creator {
+       color:white;
+       cursor:default;
+       margin-left:7px;
+       margin-right:25px;
+       margin-top:2px;
+    }
+
+    .button_jamesy-creator {
+     background:transparent;
+     border:none;
+     outline: none;
+     color:white;
+     padding:0px;
+     margin-left:20px;
+     cursor:pointer !important;
+     text-decoration: none;
+     margin-top:2px;
+     transition: 0.2s;
+    }
+    
+    .button_jamesy-creator:hover {
+        color:gold;
+        cursor: pointer;
+    }
+
+  </style>
+  <img src="images/shapes.png" class="icon_jamesy-creator">
+  <span class="title_jamesy-creator" id="title_jamesy-creator">Jamesy Creator</span>
+
+  <a class="button_jamesy-creator" href="https://jamesy-tech.github.io/jamesy-creator/">Home</a>
+    <a class="button_jamesy-creator" href="https://jamesy-tech.github.io/jamesy-creator/Jamesy%20Creator/index.html#apps">Apps</a>
+      <a class="button_jamesy-creator" href="https://jamesy-tech.github.io/jamesy-creator/Jamesy%20Creator/index.html#profile">Profile</a>
+        <a class="button_jamesy-creator" href="https://jamesy-tech.github.io/jamesy-creator/Jamesy%20Creator/index.html#account">Account</a>
+
+        <script>
+
+            const title = document.title
+
+            document.getElementById("title_jamesy-creator").textContent = title
+
+        </script>
+
+</div>
+
+
+
     
           <div class="home-page-sidebar-left">
 
@@ -454,17 +518,25 @@ background:whitesmoke;
           <a class="ripple-button" onclick="newDrawing()">New drawing</a>
             <a class="ripple-button" href="https://jamesy-tech.github.io/jamesy-creator-docs/">Docs</a>
             <a class="ripple-button" href="https://jamesy-tech.github.io/jamesy-creator-drawings/">Drawings</a>
-            <a class="ripple-button" href="https://jamesy-tech.github.io/jamesy-creator-creative-toolbox/">Creative Toolbox</a>
-             <a class="ripple-button" onclick="quit()">Quit</a>
+            <a class="ripple-button" href="https://jamesy-tech.github.io/text-editor">Code</a>
+             <a class="ripple-button" href="https://jamesy-tech.github.io/jamesy-creator?page=apps">More...</a>
+             <a class="ripple-button" onclick="quit()">Close app</a>
         </div>
     </div>
 
+    <style>
+        .padding-box {
+            padding:20px;
+        }
+    </style>
 
-   
-      <br>
+    <div class="padding-box">
     
         <button onclick="newDrawing()" class="ripple-button new-button">New drawing</button>   &nbsp;    <input style="display:none;" type="text" id="searchBar" placeholder="Search drawings..." oninput="filterDrawings()">
         <div id="savedDrawings" class="drawing-container"></div>
+
+        </div>
+
     </div>
 
     <!-- Editor Screen -->
@@ -875,4 +947,3 @@ if (!user || user.toLowerCase() === "guest") {
 
 </body>
 </html>
-
