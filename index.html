@@ -7,6 +7,7 @@
     <!-- Fonts and Icons as in docs editor -->
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
     <style>
         * { font-family: "Mulish", sans-serif; box-sizing: border-box; }
         body { margin: 0; padding: 0; background: #f5f6fa; }
@@ -312,14 +313,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.15s, box-shadow 0.15s;
+            transition: background 0.15s, box-shadow 0.15s, transform 0.15s;
             box-shadow: none;
             cursor: pointer;
             font-size: 20px;
         }
         .toolbar-button:hover {
-            background: #cce4fd;
             box-shadow: 0 2px 5px 0 rgba(0,0,0,0.07);
+          /* transform:scale(1.025); */
         }
         #drawingName {
             width: 145px;
@@ -409,7 +410,7 @@
                   <!--     <button onclick="goHome()" class="toolbar-button" title="Home"><span class="material-icons-outlined">home</span></button> -->
                         <input type="text" id="drawingName" placeholder="Untitled drawing">
                         <button onclick="deleteDrawing()" class="toolbar-button" title="Delete"><span class="material-icons-outlined">delete</span></button>
-                        <button onclick="saveDrawing()" class="toolbar-button" title="Save"><span class="material-icons-outlined">save</span></button>
+                    <!--   <button onclick="saveDrawing()" class="toolbar-button" title="Save"><span class="material-icons-outlined">save</span></button> -->
                         <button onclick="downloadDrawing()" class="toolbar-button" title="Download"><span class="material-icons-outlined">download</span></button>
                         <span id="statusText">Not Saved</span>
                     </div>
@@ -418,7 +419,9 @@
                         <input type="color" id="colorPicker" value="#000000">
                         <div id="fakeColorPicker" onclick="colorPick()" title="Pick Color"></div>
                         <input type="range" id="penSize" min="1" max="100" value="2" title="Pen Size">
-                        <button onclick="toggleEraser()" id="eraser" class="toolbar-button" title="Eraser"><span class="material-icons-outlined">ink_eraser</span></button>
+<button onclick="toggleEraser()" id="eraser" class="toolbar-button" title="Eraser">
+    <span class="material-symbols-outlined">ink_eraser</span>
+</button>
                         <button onclick="clearCanvas()" class="toolbar-button" title="Clear Canvas"><span class="material-icons-outlined">layers_clear</span></button>
                     </div>
                 </div>
